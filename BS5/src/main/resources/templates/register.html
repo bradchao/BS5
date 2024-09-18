@@ -1,33 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <script>
-	function test1(){
-		fetch('/test/01')
-			.then(response => {
-				if (!response.ok){
-					throw new Error('Error: test1()');
-				}
-				return response.json();
-			})
-			.then(data => {
-				console.log(data);
-			})
-			.catch(error => {
-				console.error('err:', error);
-			});
-	}
-	
-	function test2(){
-		let idValue = document.getElementById('id').value;
-		let nameValue = document.getElementById('name').value;
+	function register(){
+		let account = document.getElementById('account').value;
+		let passwd = document.getElementById('passwd').value;
+		let name = document.getElementById('name').value;
 		
 		let data = {
-				id : idValue,
-				name : nameValue
+				account : account,
+				passwd : passwd,
+				name : name
 		};
 		console.log(JSON.stringify(data));
 		
-		fetch('/test/02',{
+		fetch('/user/register',{
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -42,27 +28,47 @@
 			})
 			.then(data => {
 				console.log('Success: ',data);
-				window.location.href = '/main';
+				//window.location.href = '/main';
 			})
 			.catch(error => {
 				console.error('err:', error);
-			});
+			});		
+	}
+	
+	function checkAccount(){
+		let account = document.getElementById('account').value;
+		fetch('/user/isexist/' + account)
+		.then(response => {
+			if (!response.ok){
+				throw new Error('Error: test1()');
+			}
+			return response.json();
+		})
+		.then(data => {
+			console.log(data);
+			document.getElementById('checkMesg').innerHTML = data.mesg;
+		})
+		.catch(error => {
+			console.error('err:', error);
+		});		
 	}
 	
 	window.onload = function(){
 		document.getElementById('uploadForm').addEventListener('submit',function(event){
 			let formData = new FormData();
 			let uploadFile = document.getElementById('uploadFile').files[0];
-			let id = document.getElementById('id').value
+			let account = document.getElementById('account').value
+			let passwd = document.getElementById('passwd').value
 			let name = document.getElementById('name').value
 			
 			formData.append('uploadFile', uploadFile);
-			formData.append('id', id);
+			formData.append('account', account);
+			formData.append('passwd', passwd);
 			formData.append('name', name);
 			
 			console.log(formData);
 
-			fetch('/test/05',{
+			fetch('/user/registerV2',{
 					method : 'POST',
 					body: formData
 				})
@@ -78,21 +84,19 @@
 		
 	}
 	
+	
 </script>
 <div th:include="header"></div>
-	Hello, World
+	Register Page
 	<hr />
-	<button onclick="test1()">Test1</button>
-	<hr />
-	Id: <input id="id" /><br />
+	Account: <input id="account" onblur="checkAccount()" /><span id="checkMesg"></span><br />
+	Password: <input type="password" id="passwd" /><br />	
 	Name: <input id="name" /><br />
-	<button onclick="test2()">Test2</button>
-	<hr />
-	
 	<form id="uploadForm">
 		<input type="file" id="uploadFile" name="uploadFile" />
-		<button type="submit">Upload</button>
-	</form>
+		<button type="submit">Register</button>
+	</form>	
+	
 	
 	
 <div th:include="footer"></div>

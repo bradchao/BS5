@@ -15,7 +15,17 @@ public class Main {
 	public String main() {
 		return "main";
 	}
-	
+
+	@RequestMapping("/register")
+	public String reg() {
+		return "register";
+	}
+
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
+	}
+
 	@RequestMapping("/header")
 	public String header() {
 		return "header";

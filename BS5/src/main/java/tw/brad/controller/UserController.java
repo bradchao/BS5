@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import tw.brad.model.ResponseUser;
 import tw.brad.model.User;
@@ -25,6 +27,24 @@ public class UserController {
 	
 	@PostMapping("/register")
 	public ResponseUser reg(@RequestBody User user) {
+		return userService.regUser(user);
+	}
+	
+	@PostMapping("/registerV2")
+	public ResponseUser regV2(@RequestParam("uploadFile") MultipartFile uploadFile,
+			@RequestParam String account, 
+			@RequestParam String passwd, 
+			@RequestParam String name) {
+		User user = new User();
+		user.setAccount(account);
+		user.setPasswd(passwd);
+		user.setName(name);
+		try {
+			user.setIcon(uploadFile.getBytes());
+		}catch(Exception e) {
+			user.setIcon(null);
+		}
+		
 		return userService.regUser(user);
 	}
 	

@@ -73,16 +73,21 @@ public class TestController {
 	@Autowired
 	private TestService testService;
 
+	// Upload
 	@PostMapping("/05")
-	public ResponseEntity<String> test05(@RequestParam("uploadFile") MultipartFile uploadFile) {
+	public ResponseEntity<String> test05(@RequestParam("uploadFile") MultipartFile uploadFile,
+			@RequestParam Long id, 
+			@RequestParam String name) {
 		System.out.println(uploadFile.getSize());
+		System.out.println(id);
+		System.out.println(name);
 		
-		try {
-			testService.uploadFile(uploadFile);
+//		try {
+//			testService.uploadFile(uploadFile);
 			return ResponseEntity.status(HttpStatus.OK).body("upload success");
-		} catch (IOException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("upload failure");
-		}
+//		} catch (IOException e) {
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("upload failure");
+//		}
 	}
 	
 	
