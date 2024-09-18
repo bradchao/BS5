@@ -61,8 +61,25 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public ResponseUser loginUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		ResponseUser responseUser = isExistUser(user.getAccount());
+		if (responseUser.getUserStatus() == UserStatus.NOT_EXIST) {
+			responseUser.setUserStatus(UserStatus.LOGIN_FAILURE);
+			responseUser.setMesg("Login Failure");
+			responseUser.setUser(user);
+		}else {
+			User userDB = responseUser.getUser();
+			if (BCrypt.checkpw(user.getPasswd(), userDB.getPasswd())) {
+				responseUser.setUserStatus(UserStatus.LOGIN_SUCCESS);
+				responseUser.setMesg("Login Success");
+				responseUser.setUser(userDB);
+			}else {
+				responseUser.setUserStatus(UserStatus.LOGIN_FAILURE);
+				responseUser.setMesg("Login Failure");
+				responseUser.setUser(user);				
+			}
+		}
+		
+		return responseUser;
 	}
 
 }
