@@ -9,5 +9,4 @@ import tw.brad.model.User;
 public interface UserRepository extends CrudRepository<User, Long>{
 	public List<User> findByAccount(String account);
 	
-	
 }
