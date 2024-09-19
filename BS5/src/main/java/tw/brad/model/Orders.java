@@ -1,5 +1,7 @@
 package tw.brad.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,9 +22,10 @@ public class Orders {
 	
 	@Column(name = "date")
 	private String date;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "cust_id", nullable = false)
+	@JsonBackReference
 	private Cust cust;
 
 	public Long getId() {
