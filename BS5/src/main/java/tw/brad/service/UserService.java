@@ -11,4 +11,7 @@ public interface UserService {
 	public ResponseUser loginUser(User user);
 	
 	
+	public User updateUser(User user);
+	public void deleteUser(Long id);
+	
 }
