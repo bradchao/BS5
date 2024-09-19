@@ -1,5 +1,7 @@
 package tw.brad.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import tw.brad.model.ResponseUser;
 import tw.brad.model.User;
+import tw.brad.repository.UserRepository;
 import tw.brad.service.UserService;
 
 @RequestMapping("/user")
@@ -21,6 +24,9 @@ import tw.brad.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@GetMapping("/isexist/{account}")
 	public ResponseUser isExist(@PathVariable String account) {
@@ -67,4 +73,14 @@ public class UserController {
 		return "delete";
 	}
 
+	@GetMapping("/getAccount/{key}")
+	public List<User> getAccountByKey(@PathVariable String key){
+		return userRepository.findByAccountContaining(key);
+	}
+	
+	@GetMapping("/get/{key}")
+	public List<User> getAccountOrNameByKey(@PathVariable String key){
+		return userRepository.findByAccountOrNameLike(key, key);
+	}
+	
 }
